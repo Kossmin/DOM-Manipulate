@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Chat";
+}
+
+<h2>Chat</h2>
+
+<div class="container">
+    <input type="text" id="txtMessage" />
+    <button class="btn btn-success" id="btnSend">Send</button>
+</div>
+<div class="container">
+    <ul id="contentMessage">
+
+    </ul>
+</div>
+@section scripts
+    {
+    <script>
+        $(function () {
+            var chat = $.connection.demoChat;// chữ cái đầu này em viết thường nhé
+            console.log(chat);
+
+            loadClient(chat);
+            $.connection.hub.start().done(function () {
+                $('#btnSend').click(function () {
+                    var messenger = $('#txtMessage').val();
+                    chat.server.message(messenger);//tên message phải giống bên server em nhe
+                });
+            });
+
+        });
+
+        function loadClient(chat) {
+
+            chat.client.message = function (messenger) {
+                $('#contentMessage').append("<li>" + messenger + "</li>");
+            }
+           
+        }
+
+    </script>
+    }
